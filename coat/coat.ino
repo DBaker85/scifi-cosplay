@@ -49,10 +49,15 @@ class NeoPatterns : public Adafruit_NeoPixel
     // Update the pattern
     void Update(uint16_t type2)
     {
-      if ((millis() - lastUpdate) > Interval) // time to update
+      unsigned long activeInterval;
+      activeInterval = Interval;
+      if(type2 == true){
+        activeInterval = Interval/3
+        ;
+      }
+      if ((millis() - lastUpdate) > activeInterval) // time to update
       {
         lastUpdate = millis();
-
         ScannerUpdate(type2);
 
       }
@@ -63,12 +68,10 @@ class NeoPatterns : public Adafruit_NeoPixel
       if (ping == true) {
         lastPingUpdate = millis();
         pingReceived = true;
-        Serial.println("pinged");
       } else {
         if ((millis() - lastPingUpdate) > 2000) // time to update
         {
           lastPingUpdate = millis();
-          Serial.println("remove state");
           pingReceived = false;
         }
       }
@@ -234,9 +237,7 @@ void setup()
   // Initialize all the pixelStrips
   Stick.begin();
   // Kick off a pattern
-  Stick.Scanner(Stick.Color(100, 80, 0), Stick.Color(200, 0, 0), 200);
-
-
+  Stick.Scanner(Stick.Color(100, 80, 0), Stick.Color(200, 0, 50), 200);
 }
 
 // Main loop
